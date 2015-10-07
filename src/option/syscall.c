@@ -9,11 +9,11 @@
 
 #if _FS_REENTRANT
 /*------------------------------------------------------------------------*/
-/* Create a Synchronization Object
+/* Create a Synchronization Object                                        */
 /*------------------------------------------------------------------------*/
 /* This function is called in f_mount() function to create a new
-/  synchronization object, such as semaphore and mutex. When a 0 is returned,
-/  the f_mount() function fails with FR_INT_ERR.
+ *  synchronization object, such as semaphore and mutex. When a 0 is returned,
+ *  the f_mount() function fails with FR_INT_ERR.
 */
 
 int ff_cre_syncobj (	/* !=0:Function succeeded, ==0:Could not create due to any error */

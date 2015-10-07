@@ -33,21 +33,42 @@ DSTATUS disk_status (
 	case ATA :
 		result = ATA_disk_status();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NODISK;
+		}
 
 		return stat;
 
 	case MMC :
 		result = MMC_disk_status();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NODISK;
+		}
 
 		return stat;
 
 	case USB :
 		result = USB_disk_status();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NODISK;
+		}
 
 		return stat;
 	}
@@ -71,21 +92,42 @@ DSTATUS disk_initialize (
 	case ATA :
 		result = ATA_disk_initialize();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NOINIT;
+		}
 
 		return stat;
 
 	case MMC :
 		result = MMC_disk_initialize();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NOINIT;
+		}
 
 		return stat;
 
 	case USB :
 		result = USB_disk_initialize();
 
-		// translate the reslut code here
+		if (result)
+		{
+			stat = 0;
+		}
+		else
+		{
+			stat = STA_NOINIT;
+		}
 
 		return stat;
 	}
@@ -110,29 +152,44 @@ DRESULT disk_read (
 
 	switch (pdrv) {
 	case ATA :
-		// translate the arguments here
-
 		result = ATA_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case MMC :
-		// translate the arguments here
-
 		result = MMC_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case USB :
-		// translate the arguments here
-
 		result = USB_disk_read(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 	}
@@ -159,29 +216,44 @@ DRESULT disk_write (
 
 	switch (pdrv) {
 	case ATA :
-		// translate the arguments here
-
 		result = ATA_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case MMC :
-		// translate the arguments here
-
 		result = MMC_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case USB :
-		// translate the arguments here
-
 		result = USB_disk_write(buff, sector, count);
 
-		// translate the reslut code here
+		if (result)
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 	}
@@ -203,28 +275,176 @@ DRESULT disk_ioctl (
 )
 {
 	DRESULT res;
-	int result;
+	int result = 0;
 
 	switch (pdrv) {
 	case ATA :
 
-		// Process of the command for the ATA drive
+		switch(cmd)
+		{
+			case CTRL_SYNC:
+				result = ATA_ctrl_sync();
+			break;
+		
+			case GET_SECTOR_COUNT:
+				result = ATA_get_sector_count(buff);
+			break;
+		
+			case GET_SECTOR_SIZE:
+				result = ATA_get_sector_size(buff);
+			break;
+		
+			case GET_BLOCK_SIZE:
+				result = ATA_get_block_size(buff);
+			break;
+		
+			case CTRL_TRIM:
+				result = ATA_ctrl_trim(buff);
+			break;
+
+			case ATA_GET_REV:
+				result = ATA_get_rev(buff);
+			break;
+
+			case ATA_GET_MODEL:
+				result = ATA_get_model(buff);
+			break;
+
+			case ATA_GET_SN:
+				result = ATA_get_sn(buff);
+			break;
+		}
+
+		if( result )
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case MMC :
 
-		// Process of the command for the MMC/SD card
+		switch(cmd)
+		{
+			case CTRL_SYNC:
+				result = MMC_ctrl_sync();
+			break;
+		
+			case GET_SECTOR_COUNT:
+				result = MMC_get_sector_count(buff);
+			break;
+		
+			case GET_SECTOR_SIZE:
+				result = MMC_get_sector_size(buff);
+			break;
+		
+			case GET_BLOCK_SIZE:
+				result = MMC_get_block_size(buff);
+			break;
+		
+			case CTRL_TRIM:
+				result = MMC_ctrl_trim(buff);
+			break;
+
+			case MMC_GET_TYPE:	
+				result = MMC_get_type(buff);
+			break;
+
+			case MMC_GET_CSD:		
+				result = MMC_get_csd(buff);
+			break;
+
+			case MMC_GET_CID:		
+				result = MMC_get_cid(buff);
+			break;
+
+			case MMC_GET_OCR:		
+				result = MMC_get_ocr(buff);
+			break;
+
+			case MMC_GET_SDSTAT:
+				result = MMC_get_sdstat(buff);
+			break;
+		}
+
+		if( result )
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 
 	case USB :
 
-		// Process of the command the USB drive
+		switch(cmd)
+		{
+			case CTRL_SYNC:
+				result = USB_ctrl_sync();
+			break;
+		
+			case GET_SECTOR_COUNT:
+				result = USB_get_sector_count(buff);
+			break;
+		
+			case GET_SECTOR_SIZE:
+				result = USB_get_sector_size(buff);
+			break;
+		
+			case GET_BLOCK_SIZE:
+				result = USB_get_block_size(buff);
+			break;
+		
+			case CTRL_TRIM:
+				result = USB_ctrl_trim(buff);
+			break;
+		}
+
+		if( result )
+		{
+			res = RES_OK;
+		}
+		else
+		{
+			res = RES_ERROR;
+		}
 
 		return res;
 	}
 
+
+
 	return RES_PARERR;
 }
+
+DWORD get_fattime(void);
+DWORD get_fattime(void)
+{
+	uint32_t time = 0;
+	
+	uint8_t seconds = 0;
+	uint8_t minutes = 10;
+	uint8_t hours = 10;
+	uint8_t day = 5;
+	uint8_t month = 5;
+	uint8_t year = 2015-1980;
+		
+	time += (seconds			& 0b00000000000000000000000000011111);
+	time += ((minutes	<< 5)	& 0b00000000000000000000011111100000);
+	time += ((hours		<< 11)	& 0b00000000000000001111100000000000);
+	time += ((day		<< 16)	& 0b00000000000111110000000000000000);
+	time += ((month		<< 21)	& 0b00000001111000000000000000000000);
+	time += ((year		<< 25)	& 0b11111110000000000000000000000000);
+	
+	return time;
+}
+
+
 #endif
