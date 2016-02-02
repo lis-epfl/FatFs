@@ -751,7 +751,7 @@ FRESULT sync_fs (	/* FR_OK: successful, FR_DISK_ERR: failed */
 /* Get sector# from cluster#                                             */
 /*-----------------------------------------------------------------------*/
 /* Hidden API for hacks and disk tools */
-
+DWORD clust2sect(FATFS* fs, DWORD clst);
 DWORD clust2sect (	/* !=0: Sector number, 0: Failed - invalid cluster# */
 	FATFS* fs,		/* File system object */
 	DWORD clst		/* Cluster# to be converted */
@@ -769,7 +769,7 @@ DWORD clust2sect (	/* !=0: Sector number, 0: Failed - invalid cluster# */
 /* FAT access - Read value of a FAT entry                                */
 /*-----------------------------------------------------------------------*/
 /* Hidden API for hacks and disk tools */
-
+DWORD get_fat(FATFS* fs, DWORD clst);
 DWORD get_fat (	/* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x0FFFFFFF:Cluster status */
 	FATFS* fs,	/* File system object */
 	DWORD clst	/* FAT index number (cluster number) to get the value */
@@ -825,6 +825,7 @@ DWORD get_fat (	/* 0xFFFFFFFF:Disk error, 1:Internal error, 2..0x0FFFFFFF:Cluste
 /* Hidden API for hacks and disk tools */
 
 #if !_FS_READONLY
+FRESULT put_fat(FATFS* fs, DWORD clst, DWORD val);
 FRESULT put_fat (
 	FATFS* fs,	/* File system object */
 	DWORD clst,	/* FAT index number (cluster number) to be changed */
